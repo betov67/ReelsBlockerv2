@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Accessibility Service configuration for ReelsBlocker.
+
+    Key decisions:
+    • packageNames="com.instagram.android" — we only watch Instagram events,
+      keeping CPU overhead minimal.
+    • accessibilityEventTypes — we watch:
+          TYPE_WINDOW_STATE_CHANGED   → detect which Activity/Fragment is shown
+          TYPE_WINDOW_CONTENT_CHANGED → detect new nodes appearing (e.g. Reel loading)
+          TYPE_VIEW_SCROLLED          → detect swipe/scroll inside a Reel
+          TYPE_VIEW_CLICKED           → detect taps on nav-bar items
+    • accessibilityFeedbackType="feedbackGeneric" — no audio/haptic feedback from us.
+    • canRetrieveWindowContent="true"  — required to walk the view hierarchy.
+    • canRequestFilterKeyEvents="false" — we don't need key events.
+    • notificationTimeout="100" — 100 ms debounce; low enough to feel instant,
+      high enough to avoid flooding.
+    • flagReportViewIds="true" — necessary so getViewIdResourceName() returns
+      actual IDs like "com.instagram.android:id/clips_tab".
+-->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="
+        typeWindowStateChanged|
+        typeWindowContentChanged|
+        typeViewScrolled|
+        typeViewClicked"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagReportViewIds|flagRequestFilterKeyEvents"
+    android:canRetrieveWindowContent="true"
+    android:description="@string/accessibility_service_description"
+    android:notificationTimeout="100"
+    android:packageNames="com.instagram.android"
+    android:settingsActivity=".MainActivity" />
